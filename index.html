@@ -2006,10 +2006,25 @@ document.querySelectorAll('.modal-overlay').forEach(function(o){
   });
 });
 function submitForm(t){
+  var modal=document.querySelector('#modal-'+t);
+  var inputs=modal.querySelectorAll('input[type=email]');
+  var blocked=['gmail.com','googlemail.com','hotmail.com','hotmail.co.uk','hotmail.fr','hotmail.de','hotmail.es','hotmail.it','outlook.com','outlook.es','outlook.co.uk','live.com','live.com.mx','msn.com','yahoo.com','yahoo.com.mx','yahoo.co.uk','yahoo.es','yahoo.fr','yahoo.de','yahoo.it','ymail.com','aol.com','icloud.com','me.com','mac.com','protonmail.com','proton.me','pm.me','zoho.com','mail.com','gmx.com','gmx.de','gmx.net','yandex.com','yandex.ru','tutanota.com','tuta.io','fastmail.com','hey.com','inbox.com','rediffmail.com','qq.com','163.com','126.com','sina.com','naver.com','daum.net','hanmail.net','web.de','t-online.de','orange.fr','free.fr','laposte.net','wanadoo.fr','libero.it','virgilio.it','terra.com.mx'];
+  for(var i=0;i<inputs.length;i++){
+    var d=inputs[i].value.split('@')[1];
+    if(d&&blocked.indexOf(d.toLowerCase())!==-1){
+      alert('Solo se aceptan correos corporativos. Direcciones como @gmail, @hotmail, @yahoo no son validas.');
+      return;
+    }
+  }
+  var data={};
+  modal.querySelectorAll('input,select,textarea').forEach(function(el){
+    if(el.name)data[el.name]=el.value;
+  });
+  data.source=document.title;data.formType=t;data.timestamp=new Date().toISOString();data.url=window.location.href;
+  fetch('https://hook.eu1.make.com/6c7yq50qkr6ena51ccqxsxgrydsfwx3k',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});
   var btn=document.querySelector('#modal-'+t+' .form-submit');
-  btn.textContent='✓ Enviado — Te contactaremos pronto';
-  btn.style.background='#2a8a96';
-  btn.style.color='#fff';
+  btn.textContent='Enviado - Te contactaremos pronto';
+  btn.style.background='#2a8a96';btn.style.color='#fff';
   setTimeout(function(){ closeModal(t); },2600);
 }
 document.addEventListener('keydown',function(e){
