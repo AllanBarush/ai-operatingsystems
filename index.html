@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI // Operating System Bootcamp — RiskMathics Financial Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy-deep:   #020d1a;
+  --navy-mid:    #061526;
+  --navy-panel:  #0a1e35;
+  --navy-card:   #0d2240;
+  --navy-hover:  #102a4d;
+  --cyan:        #4fc3d0;
+  --cyan-dim:    #2a8a96;
+  --cyan-glow:   rgba(79,195,208,0.12);
+  --gold:        #c9a84c;
+  --gold-light:  #e2c36e;
+  --gold-dim:    rgba(201,168,76,0.18);
+  --white:       #ffffff;
+  --off-white:   #e8eef5;
+  --text-body:   #9ab0c8;
+  --text-dim:    #5a7a96;
+  --border:      rgba(79,195,208,0.15);
+  --border-gold: rgba(201,168,76,0.25);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: 'Lora', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--off-white);
+  overflow-x: hidden;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background: var(--navy-deep); }
+::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius:2px; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top:0; left:0; right:0;
+  z-index:100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6%;
+  height: 66px;
+  background: rgba(2,13,26,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.nav-rm-badge {
+  width: 34px; height: 34px;
+  border: 1.5px solid var(--cyan-dim);
+  border-radius: 50%;
+  display: flex; align-items:center; justify-content:center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px; font-weight:700;
+  color: var(--cyan);
+  letter-spacing: 0;
+}
+.nav-brand-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px; font-weight:600;
+  color: var(--off-white);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.nav-brand-text span {
+  display:block;
+  font-size: 9px; font-weight:400;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+}
+.nav-actions { display:flex; gap:10px; align-items:center; }
+
+.btn-ghost {
+  font-family:'Poppins',sans-serif;
+  font-size:10px; font-weight:500;
+  color: var(--cyan);
+  border: 1px solid var(--border);
+  padding: 8px 18px;
+  background: transparent;
+  cursor:pointer; text-decoration:none;
+  letter-spacing:2px; text-transform:uppercase;
+  transition: all .25s;
+}
+.btn-ghost:hover { background: var(--cyan-glow); border-color: var(--cyan); }
+
+.btn-cta-nav {
+  font-family:'Poppins',sans-serif;
+  font-size:10px; font-weight:700;
+  color: var(--navy-deep);
+  background: var(--cyan);
+  border: none; padding: 9px 20px;
+  cursor:pointer; text-decoration:none;
+  letter-spacing:2px; text-transform:uppercase;
+  transition: all .25s;
+}
+.btn-cta-nav:hover { background: var(--cyan-dim); color: var(--white); }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 66px;
+}
+
+/* Dark navy radial background matching the image */
+.hero-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 70% 80% at 50% 40%, #0a2a4a 0%, #061526 40%, #020d1a 100%);
+}
+.hero-bg-glow {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 40% 50% at 50% 35%, rgba(10,60,100,0.6) 0%, transparent 70%);
+}
+/* Subtle noise texture */
+.hero-noise {
+  position:absolute; inset:0;
+  opacity:0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px;
+}
+
+.hero-content {
+  position:relative; z-index:2;
+  width:100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 6%;
+  text-align: center;
+}
+
+.hero-overline {
+  display: inline-flex;
+  align-items:center;
+  gap: 12px;
+  margin-bottom: 40px;
+  opacity:0;
+  animation: fadeUp .9s ease .1s forwards;
+}
+.hero-overline-line { width:28px; height:1px; background: var(--cyan); }
+.hero-overline-text {
+  font-family:'Poppins',sans-serif;
+  font-size:10px; font-weight:500;
+  color: var(--cyan);
+  letter-spacing:5px; text-transform:uppercase;
+}
+
+.hero-title {
+  font-family:'Poppins',sans-serif;
+  font-size: clamp(52px, 8.5vw, 110px);
+  font-weight:800;
+  color: var(--white);
+  line-height: 0.95;
+  letter-spacing: -3px;
+  margin-bottom: 12px;
+  opacity:0;
+  animation: fadeUp 1s ease .2s forwards;
+}
+.hero-title .slash { color: var(--cyan); }
+
+.hero-subtitle {
+  font-family:'Lora',serif;
+  font-size: clamp(16px, 2vw, 22px);
+  font-style: italic;
+  color: rgba(232,238,245,0.65);
+  margin-bottom: 14px;
+  opacity:0;
+  animation: fadeUp 1s ease .35s forwards;
+  letter-spacing: 0.5px;
+}
+
+.hero-cyan-line {
+  width: 48px; height: 2px;
+  background: var(--cyan);
+  margin: 0 auto 36px;
+  opacity:0;
+  animation: expandLine .8s ease .45s forwards;
+}
+
+.hero-date-pill {
+  display: inline-flex;
+  align-items:center; gap:10px;
+  background: rgba(79,195,208,0.1);
+  border: 1px solid var(--border);
+  padding: 10px 24px;
+  font-family:'Poppins',sans-serif;
+  font-size:10px; font-weight:500;
+  color: var(--cyan);
+  letter-spacing:4px; text-transform:uppercase;
+  margin-bottom: 48px;
+  opacity:0;
+  animation: fadeUp 1s ease .5s forwards;
+}
+
+.hero-btns {
+  display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+  opacity:0;
+  animation: fadeUp 1s ease .6s forwards;
+}
+
+.btn-hero-primary {
+  font-family:'Poppins',sans-serif;
+  font-size:11px; font-weight:700;
+  color: var(--navy-deep);
+  background: var(--cyan);
+  padding: 16px 40px;
+  border:none; cursor:pointer; text-decoration:none;
+  letter-spacing:3px; text-transform:uppercase;
+  transition: all .3s;
+  display:inline-block;
+}
+.btn-hero-primary:hover {
+  background: #6dd5e0;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(79,195,208,0.35);
+}
+
+.btn-hero-ghost {
+  font-family:'Poppins',sans-serif;
+  font-size:11px; font-weight:500;
+  color: var(--off-white);
+  background: transparent;
+  padding: 16px 40px;
+  border: 1px solid rgba(232,238,245,0.2);
+  cursor:pointer; text-decoration:none;
+  letter-spacing:3px; text-transform:uppercase;
+  transition: all .3s;
+  display:inline-block;
+}
+.btn-hero-ghost:hover {
+  border-color: rgba(232,238,245,0.5);
+  background: rgba(232,238,245,0.05);
+  transform: translateY(-2px);
+}
+
+/* scroll indicator */
+.scroll-hint {
+  position:absolute;
+  bottom:36px; left:50%;
+  transform:translateX(-50%);
+  display:flex; flex-direction:column;
+  align-items:center; gap:8px;
+  opacity:0;
+  animation: fadeIn 1.2s ease 1.2s forwards;
+}
+.scroll-hint-text {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; color: var(--text-dim);
+  letter-spacing:4px; text-transform:uppercase;
+}
+.scroll-hint-bar {
+  width:1px; height:36px;
+  background: linear-gradient(var(--cyan), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* ─── STATS STRIP ─── */
+.stats-strip {
+  background: var(--navy-mid);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0 6%;
+  display:flex;
+  overflow-x:auto;
+}
+.stat-block {
+  flex:1; min-width:160px;
+  padding: 28px 24px;
+  display:flex; flex-direction:column; gap:4px;
+  border-right: 1px solid var(--border);
+}
+.stat-block:last-child { border-right:none; }
+.stat-val {
+  font-family:'Poppins',sans-serif;
+  font-size: clamp(22px,3vw,34px);
+  font-weight:800;
+  color: var(--white);
+  line-height:1;
+}
+.stat-val em { color: var(--cyan); font-style:normal; }
+.stat-lbl {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:500;
+  color: var(--text-dim);
+  letter-spacing:2px; text-transform:uppercase;
+  line-height:1.4;
+}
+.stat-src {
+  font-family:'Lora',serif;
+  font-size:10px; font-style:italic;
+  color: var(--text-dim);
+  margin-top:2px;
+}
+
+/* ─── SECTION SHARED ─── */
+.section {
+  padding: 100px 6%;
+}
+.section-inner { max-width:1280px; margin:0 auto; }
+
+.eyebrow {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:20px;
+}
+.eyebrow-line { width:28px; height:1px; background: var(--cyan); }
+.eyebrow-text {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:600;
+  color: var(--cyan);
+  letter-spacing:5px; text-transform:uppercase;
+}
+
+.sec-title {
+  font-family:'Poppins',sans-serif;
+  font-size: clamp(30px,4vw,52px);
+  font-weight:800;
+  color: var(--white);
+  line-height:1.05;
+  letter-spacing:-1.5px;
+  margin-bottom:24px;
+}
+.sec-title em { color: var(--cyan); font-style:normal; }
+
+.sec-body {
+  font-family:'Lora',serif;
+  font-size:15.5px;
+  color: var(--text-body);
+  line-height:1.85;
+  margin-bottom:18px;
+}
+
+/* ─── ABOUT / ABSTRACT ─── */
+.about-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:72px;
+  align-items:start;
+}
+
+.pull-quote {
+  background: var(--navy-panel);
+  border-left: 3px solid var(--cyan);
+  padding: 28px 32px;
+  margin: 32px 0;
+}
+.pull-quote-text {
+  font-family:'Lora',serif;
+  font-size: clamp(16px,1.6vw,19px);
+  font-style:italic;
+  color: var(--off-white);
+  line-height:1.7;
+}
+.pull-quote-attr {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:600;
+  color: var(--cyan);
+  letter-spacing:2px; text-transform:uppercase;
+  margin-top:14px;
+}
+
+.stat-grid-2x3 {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1px; background: var(--border);
+  border: 1px solid var(--border);
+}
+.mini-stat {
+  background: var(--navy-panel);
+  padding: 28px 22px;
+}
+.mini-stat-val {
+  font-family:'Poppins',sans-serif;
+  font-size:30px; font-weight:900;
+  color: var(--white); line-height:1;
+  margin-bottom:6px;
+}
+.mini-stat-val sup { font-size:16px; color: var(--cyan); }
+.mini-stat-val small { font-size:18px; color: var(--cyan); }
+.mini-stat-desc {
+  font-family:'Lora',serif;
+  font-size:12px; color: var(--text-body);
+  line-height:1.5;
+}
+.mini-stat-src {
+  font-family:'Poppins',sans-serif;
+  font-size:8px; color: var(--cyan-dim);
+  letter-spacing:1px; text-transform:uppercase;
+  margin-top:6px;
+}
+
+/* ─── FACULTY ─── */
+.faculty-section {
+  background: var(--navy-mid);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.faculty-layout {
+  display:block;
+}
+
+
+
+/* Bio content */
+.faculty-bio-wrap {}
+.faculty-header-block {
+  margin-bottom: 36px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+.faculty-header-name {
+  font-family:'Poppins',sans-serif;
+  font-size: clamp(32px,4vw,52px);
+  font-weight:900;
+  color: var(--white);
+  letter-spacing:-1.5px;
+  line-height:1.0;
+  margin-bottom:10px;
+}
+.faculty-header-phd {
+  color: var(--cyan);
+  font-weight:400;
+  font-size:0.6em;
+  letter-spacing:0;
+}
+.faculty-header-cred {
+  font-family:'Lora',serif;
+  font-size:15px;
+  font-style:italic;
+  color: var(--cyan);
+  margin-bottom:20px;
+  line-height:1.5;
+}
+.faculty-header-tags {
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.ftag {
+  font-family:'Poppins',sans-serif;
+  font-size:8px; font-weight:600;
+  color: var(--cyan);
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  letter-spacing:2px; text-transform:uppercase;
+  background: var(--cyan-glow);
+}
+.bio-intro {
+  font-family:'Lora',serif;
+  font-size: clamp(16px,1.7vw,20px);
+  color: var(--off-white);
+  line-height:1.75;
+  font-style:italic;
+  margin-bottom:28px;
+  padding: 28px 32px;
+  background: var(--navy-card);
+  border-left: 3px solid var(--cyan);
+}
+
+.bio-para {
+  font-family:'Lora',serif;
+  font-size:15px; color: var(--text-body);
+  line-height:1.9; margin-bottom:20px;
+}
+
+.timeline {
+  display:flex; flex-direction:column;
+  margin: 32px 0;
+}
+.tl-item {
+  display:grid; grid-template-columns:4px 1fr;
+  gap:20px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(79,195,208,0.08);
+}
+.tl-bar { background: var(--cyan-dim); align-self:stretch; min-height:16px; }
+.tl-org {
+  font-family:'Poppins',sans-serif;
+  font-size:11px; font-weight:700;
+  color: var(--cyan);
+  letter-spacing:1px; text-transform:uppercase;
+  margin-bottom:4px;
+}
+.tl-role {
+  font-family:'Lora',serif;
+  font-size:13.5px; color: var(--text-body);
+  line-height:1.65; font-style:italic;
+}
+
+.awards-strip {
+  display:flex; flex-wrap:wrap; gap:10px; margin-top:28px;
+}
+.award-chip {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:600;
+  color: var(--gold-light);
+  background: rgba(201,168,76,0.1);
+  border: 1px solid var(--border-gold);
+  padding: 8px 14px;
+  letter-spacing:1px; text-transform:uppercase;
+  display:flex; align-items:center; gap:6px;
+}
+.award-chip::before { content:'★'; color: var(--gold); font-size:10px; }
+
+/* ─── WHY 5 DAYS ─── */
+.why-bg { background: var(--navy-panel); }
+.why-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px; background: var(--border);
+  margin-top:56px;
+}
+.why-card {
+  background: var(--navy-mid);
+  padding: 36px 28px;
+  position:relative; overflow:hidden;
+  transition: background .3s;
+}
+.why-card:hover { background: var(--navy-card); }
+.why-card::after {
+  content:'';
+  position:absolute; bottom:0; left:0;
+  width:0; height:2px;
+  background: var(--cyan);
+  transition: width .4s;
+}
+.why-card:hover::after { width:100%; }
+.why-num {
+  font-family:'Poppins',sans-serif;
+  font-size:40px; font-weight:900;
+  color: rgba(79,195,208,0.1); line-height:1;
+  margin-bottom:18px; letter-spacing:-2px;
+}
+.why-title {
+  font-family:'Poppins',sans-serif;
+  font-size:13px; font-weight:700;
+  color: var(--off-white);
+  margin-bottom:10px; letter-spacing:0.3px;
+}
+.why-desc {
+  font-family:'Lora',serif;
+  font-size:13.5px; color: var(--text-body); line-height:1.75;
+}
+
+/* ─── GOVERNANCE PRINCIPLES ─── */
+.gov-grid {
+  display:grid; grid-template-columns:repeat(5,1fr);
+  gap:1px; background: var(--border);
+  margin-top:56px;
+}
+.gov-card {
+  background: var(--navy-mid);
+  padding: 32px 22px;
+  transition: background .3s;
+  position:relative;
+}
+.gov-card:hover { background: var(--navy-card); }
+.gov-icon { font-size:26px; margin-bottom:16px; display:block; }
+.gov-num {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:700;
+  color: var(--cyan); letter-spacing:3px; text-transform:uppercase;
+  margin-bottom:8px;
+}
+.gov-title {
+  font-family:'Poppins',sans-serif;
+  font-size:14px; font-weight:800;
+  color: var(--white); margin-bottom:12px;
+}
+.gov-desc {
+  font-family:'Lora',serif;
+  font-size:12.5px; color: var(--text-body); line-height:1.75;
+}
+
+/* ─── 5 DAYS ─── */
+.days-wrap { margin-top:56px; }
+.day-row {
+  display:grid; grid-template-columns:100px 1fr;
+  margin-bottom:2px;
+  opacity:0;
+  transform:translateY(16px);
+  transition: opacity .5s ease, transform .5s ease, background .25s;
+}
+.day-row.in { opacity:1; transform:translateY(0); }
+
+.day-num-col {
+  background: var(--navy-card);
+  border-right: 1px solid var(--border);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding: 24px 12px; text-align:center;
+  transition: background .25s;
+}
+.day-row:hover .day-num-col { background: var(--cyan); }
+.day-row:hover .day-num { color: var(--navy-deep); }
+.day-row:hover .day-word { color: var(--navy-deep); opacity:.7; }
+.day-num {
+  font-family:'Poppins',sans-serif;
+  font-size:30px; font-weight:900;
+  color: var(--cyan); line-height:1;
+  transition: color .25s;
+}
+.day-word {
+  font-family:'Poppins',sans-serif;
+  font-size:8px; font-weight:600;
+  color: var(--text-dim); letter-spacing:3px; text-transform:uppercase;
+  margin-top:2px;
+  transition: color .25s;
+}
+
+.day-body-col {
+  background: var(--navy-panel);
+  padding: 26px 32px;
+  transition: background .25s;
+}
+.day-row:hover .day-body-col { background: var(--navy-card); }
+
+.day-topic-row {
+  display:flex; align-items:flex-start;
+  gap:12px; margin-bottom:10px; flex-wrap:wrap;
+}
+.day-topic-name {
+  font-family:'Poppins',sans-serif;
+  font-size:14px; font-weight:700;
+  color: var(--white); letter-spacing:0.2px;
+}
+.day-domain {
+  font-family:'Poppins',sans-serif;
+  font-size:8px; font-weight:700;
+  color: var(--navy-deep);
+  background: var(--cyan);
+  padding: 3px 10px;
+  letter-spacing:2px; text-transform:uppercase;
+  white-space:nowrap; margin-top:2px;
+}
+
+.day-desc {
+  font-family:'Lora',serif;
+  font-size:13.5px; color: var(--text-body); line-height:1.75;
+  margin-bottom:14px;
+}
+
+.day-chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px; }
+.chip {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:600;
+  color: var(--cyan);
+  border: 1px solid var(--border);
+  background: var(--cyan-glow);
+  padding: 4px 10px; letter-spacing:1px;
+}
+
+.day-artefacts-bar {
+  margin-top:12px; padding-top:12px;
+  border-top: 1px dashed rgba(79,195,208,0.15);
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.artefacts-label {
+  font-family:'Poppins',sans-serif;
+  font-size:8px; font-weight:700;
+  color: var(--gold);
+  letter-spacing:3px; text-transform:uppercase;
+  white-space:nowrap;
+}
+.artefact-chip {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:500;
+  color: var(--gold-light);
+  background: rgba(201,168,76,0.1);
+  border: 1px solid var(--border-gold);
+  padding: 4px 10px;
+}
+
+/* ─── MATURITY ─── */
+.maturity-bg { background: var(--navy-mid); }
+.maturity-steps {
+  display:grid; grid-template-columns:repeat(5,1fr);
+  gap:1px; background: var(--border);
+  margin-top:56px;
+}
+.mat-card {
+  background: var(--navy-deep);
+  padding: 32px 22px;
+  position:relative;
+  transition: transform .3s, box-shadow .3s;
+  cursor:default;
+}
+.mat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  z-index:2;
+}
+.mat-bar {
+  height:3px; background: var(--cyan);
+  margin-bottom:20px; transition: width .5s;
+}
+.mat-level {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:700;
+  color: var(--cyan); letter-spacing:3px; text-transform:uppercase;
+  margin-bottom:4px;
+}
+.mat-name {
+  font-family:'Poppins',sans-serif;
+  font-size:16px; font-weight:800;
+  color: var(--white); margin-bottom:14px; line-height:1.1;
+}
+.mat-desc {
+  font-family:'Lora',serif;
+  font-size:12.5px; color: var(--text-body); line-height:1.7;
+  margin-bottom:14px;
+}
+.mat-risk-label {
+  font-family:'Poppins',sans-serif;
+  font-size:8px; font-weight:700;
+  color: var(--text-dim); letter-spacing:2px; text-transform:uppercase;
+  margin-bottom:4px;
+}
+.mat-risk-desc {
+  font-family:'Lora',serif;
+  font-size:12px; color: var(--text-dim);
+  font-style:italic; line-height:1.5;
+}
+
+/* ─── DELIVERABLES ─── */
+.deliverables-grid {
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:1px; background: var(--border);
+  margin-top:56px;
+}
+.del-group {
+  background: var(--navy-panel);
+  padding: 40px 36px;
+}
+.del-group-title {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:700;
+  color: var(--cyan); letter-spacing:5px; text-transform:uppercase;
+  padding-bottom:16px; margin-bottom:24px;
+  border-bottom: 1px solid var(--border);
+}
+.del-item {
+  display:flex; gap:14px; align-items:flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(79,195,208,0.05);
+}
+.del-check {
+  width:18px; height:18px; flex-shrink:0;
+  background: var(--cyan);
+  display:flex; align-items:center; justify-content:center;
+  margin-top:2px;
+}
+.del-check::after {
+  content:'✓'; font-family:'Poppins',sans-serif;
+  font-size:10px; font-weight:700; color: var(--navy-deep);
+}
+.del-text {
+  font-family:'Lora',serif;
+  font-size:13.5px; color: var(--text-body); line-height:1.65;
+}
+
+/* ─── AUDIENCE ─── */
+.audience-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px; background: var(--border);
+  margin-top:56px;
+}
+.aud-card {
+  background: var(--navy-panel);
+  padding: 28px 24px;
+  transition: background .25s;
+}
+.aud-card:hover { background: var(--navy-card); }
+.aud-bar { width:28px; height:2px; background: var(--cyan); margin-bottom:14px; }
+.aud-role {
+  font-family:'Poppins',sans-serif;
+  font-size:12px; font-weight:700;
+  color: var(--white); margin-bottom:6px; letter-spacing:0.2px;
+}
+.aud-sub {
+  font-family:'Lora',serif;
+  font-size:12.5px; font-style:italic;
+  color: var(--text-dim); line-height:1.5;
+}
+
+/* ─── COMPARISON ─── */
+.comparison-bg { background: var(--navy-mid); }
+.cmp-table {
+  width:100%; border-collapse:collapse;
+  margin-top:56px; min-width:800px;
+}
+.cmp-table thead tr {
+  border-bottom: 1px solid var(--border);
+}
+.cmp-table th {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:700;
+  color: var(--cyan); letter-spacing:3px; text-transform:uppercase;
+  padding: 14px 18px; text-align:left;
+}
+.cmp-table td {
+  font-family:'Lora',serif;
+  font-size:13px; color: var(--text-body);
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(79,195,208,0.06);
+  line-height:1.5;
+}
+.cmp-table tbody tr:last-child td {
+  background: rgba(79,195,208,0.07);
+  color: var(--off-white);
+  border-bottom:none;
+}
+.cmp-table tbody tr:last-child td:first-child {
+  font-family:'Poppins',sans-serif;
+  font-size:12px; font-weight:700;
+  color: var(--cyan); letter-spacing:0.5px;
+}
+.star-badge {
+  font-family:'Poppins',sans-serif;
+  font-size:8px; font-weight:700;
+  background: var(--cyan); color: var(--navy-deep);
+  padding: 2px 7px; letter-spacing:1px; margin-left:6px;
+}
+
+/* ─── LIBRARY ─── */
+.library-bg { background: var(--navy-panel); }
+.books-row {
+  display:grid; grid-template-columns:repeat(7,1fr);
+  gap:14px; margin-top:56px;
+}
+.book-tile {
+  cursor:pointer;
+  transition: transform .35s;
+}
+.book-tile:hover { transform: translateY(-10px) rotate(-2deg); }
+.book-cover {
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-bottom: 3px solid var(--cyan);
+  padding: 20px 14px 28px;
+  aspect-ratio:3/4;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  margin-bottom:10px; position:relative;
+}
+.book-cover::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background: var(--border);
+}
+.book-icon { font-size:28px; margin-bottom:10px; opacity:.85; }
+.book-title {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:700;
+  color: var(--cyan); text-transform:uppercase;
+  letter-spacing:1px; text-align:center; line-height:1.3;
+}
+.book-num {
+  font-family:'Poppins',sans-serif;
+  font-size:8px; font-weight:500;
+  color: var(--text-dim); letter-spacing:2px;
+  text-transform:uppercase; text-align:center;
+}
+
+/* ─── ROI ─── */
+.roi-layout {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:72px; align-items:center;
+}
+.roi-title {
+  font-family:'Poppins',sans-serif;
+  font-size: clamp(30px,4vw,50px);
+  font-weight:900; color: var(--white);
+  line-height:1.0; letter-spacing:-1.5px; margin-bottom:20px;
+}
+.roi-title em { color: var(--cyan); font-style:normal; }
+.roi-para {
+  font-family:'Lora',serif;
+  font-size:15px; color: var(--text-body); line-height:1.85;
+  margin-bottom:16px;
+}
+.roi-rows { display:flex; flex-direction:column; gap:1px; }
+.roi-r {
+  display:flex; align-items:center;
+  justify-content:space-between;
+  background: var(--navy-card);
+  padding: 18px 22px; gap:16px;
+  transition: background .2s;
+}
+.roi-r:hover { background: var(--navy-hover); }
+.roi-r:last-child { background: var(--cyan); }
+.roi-r:last-child .roi-lbl,
+.roi-r:last-child .roi-val { color: var(--navy-deep); }
+.roi-lbl {
+  font-family:'Poppins',sans-serif;
+  font-size:10px; font-weight:500;
+  color: var(--text-body); letter-spacing:0.5px; flex:1;
+}
+.roi-val {
+  font-family:'Poppins',sans-serif;
+  font-size:18px; font-weight:900;
+  color: var(--white); white-space:nowrap;
+}
+
+/* ─── CTA SECTION ─── */
+.cta-section {
+  background: var(--navy-deep);
+  text-align:center;
+  padding: 120px 6%;
+  position:relative; overflow:hidden;
+}
+.cta-section::before {
+  content:'';
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(10,50,90,0.5), transparent 70%);
+}
+.cta-section::after {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+.cta-inner { position:relative; z-index:1; }
+
+.cta-eyebrow {
+  font-family:'Poppins',sans-serif;
+  font-size:9px; font-weight:600;
+  color: var(--cyan); letter-spacing:6px; text-transform:uppercase;
+  margin-bottom:24px;
+}
+.cta-title {
+  font-family:'Poppins',sans-serif;
+  font-size: clamp(36px,6vw,72px);
+  font-weight:900; color: var(--white);
+  line-height:0.95; letter-spacing:-2.5px;
+  margin-bottom:20px;
+}
+.cta-sub {
+  font-family:'Lora',serif;
+  font-size: clamp(15px,1.6vw,18px);
+  font-style:italic; color: var(--text-body);
+  max-width:560px; margin:0 auto 40px;
+  line-height:1.75;
+}
+.cta-pill {
+  display:inline-flex; align-items:center; gap:10px;
+  background: rgba(79,195,208,0.08);
+  border: 1px solid var(--border);
+  padding: 12px 28px; margin-bottom:44px;
+  font-family:'Poppins',sans-serif;
+  font-size:10px; font-weight:500;
+  color: var(--cyan); letter-spacing:3px; text-transform:uppercase;
+}
+.cta-btns {
+  display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+}
+.btn-final-a {
+  font-family:'Poppins',sans-serif;
+  font-size:12px; font-weight:700;
+  color: var(--navy-deep); background: var(--cyan);
+  padding: 18px 48px; border:none; cursor:pointer;
+  text-decoration:none; letter-spacing:3px; text-transform:uppercase;
+  transition: all .3s; display:inline-block;
+}
+.btn-final-a:hover {
+  background: #6dd5e0;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(79,195,208,0.3);
+}
+.btn-final-b {
+  font-family:'Poppins',sans-serif;
+  font-size:12px; font-weight:600;
+  color: var(--off-white); background: transparent;
+  padding: 18px 48px;
+  border: 1px solid rgba(232,238,245,0.2);
+  cursor:pointer; text-decoration:none;
+  letter-spacing:3px; text-transform:uppercase;
+  transition: all .3s; display:inline-block;
+}
+.btn-final-b:hover {
+  border-color: rgba(232,238,245,0.5);
+  background: rgba(232,238,245,0.05);
+  transform: translateY(-3px);
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: #010912;
+  border-top: 1px solid var(--border);
+  padding: 44px 6%;
+  display:flex; align-items:center;
+  justify-content:space-between; flex-wrap:wrap; gap:20px;
+}
+.footer-brand-text {
+  font-family:'Poppins',sans-serif;
+  font-size:11px; font-weight:600; color: var(--off-white);
+  letter-spacing:1.5px; text-transform:uppercase;
+}
+.footer-brand-text small {
+  display:block; font-size:9px; font-weight:400;
+  color: var(--text-dim); margin-top:3px;
+  letter-spacing:2px;
+}
+.footer-contact {
+  font-family:'Lora',serif; font-size:12px;
+  color: var(--text-dim); text-align:center;
+  line-height:1.8;
+}
+.footer-contact a { color: var(--cyan); text-decoration:none; }
+.footer-tagline {
+  font-family:'Lora',serif; font-size:11px;
+  font-style:italic; color: var(--text-dim);
+  text-align:right;
+}
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  display:none; position:fixed; inset:0;
+  background: rgba(2,13,26,0.92);
+  z-index:1000; align-items:center; justify-content:center;
+  backdrop-filter: blur(12px);
+}
+.modal-overlay.active { display:flex; }
+
+.modal-box {
+  background: var(--navy-panel);
+  width:90%; max-width:520px;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cyan);
+  position:relative;
+  animation: modalIn .3s ease;
+}
+@keyframes modalIn {
+  from { opacity:0; transform:translateY(20px) scale(.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+.modal-hd {
+  background: var(--navy-deep);
+  padding: 28px 36px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-hd-title {
+  font-family:'Poppins',sans-serif;
+  font-size:18px; font-weight:800;
+  color: var(--white); margin-bottom:4px;
+}
+.modal-hd-sub {
+  font-family:'Lora',serif; font-size:12px;
+  font-style:italic; color: var(--cyan);
+}
+.modal-close {
+  position:absolute; top:18px; right:18px;
+  background:none; border:none;
+  color: var(--text-dim); font-size:18px;
+  cursor:pointer; transition:color .2s;
+  width:28px; height:28px;
+  display:flex; align-items:center; justify-content:center;
+}
+.modal-close:hover { color: var(--white); }
+.modal-bd { padding: 32px 36px; }
+
+.form-group { margin-bottom:16px; }
+.form-label {
+  display:block; font-family:'Poppins',sans-serif;
+  font-size:8px; font-weight:700; color: var(--cyan);
+  letter-spacing:3px; text-transform:uppercase;
+  margin-bottom:7px;
+}
+.form-input, .form-select {
+  width:100%; padding:12px 14px;
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  color: var(--off-white);
+  font-family:'Lora',serif; font-size:13px;
+  outline:none; transition:border .2s;
+  -webkit-appearance:none;
+}
+.form-input::placeholder { color: var(--text-dim); }
+.form-input:focus, .form-select:focus { border-color: var(--cyan); }
+.form-select option { background: var(--navy-deep); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+.form-submit {
+  width:100%; padding:15px;
+  background: var(--cyan); color: var(--navy-deep);
+  border:none; font-family:'Poppins',sans-serif;
+  font-size:11px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase;
+  cursor:pointer; transition:all .25s; margin-top:6px;
+}
+.form-submit:hover { background: #6dd5e0; }
+.form-fine {
+  font-family:'Lora',serif; font-size:10px; font-style:italic;
+  color: var(--text-dim); text-align:center; margin-top:14px;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(22px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; } to { opacity:1; }
+}
+@keyframes expandLine {
+  from { opacity:0; width:0; } to { opacity:1; width:48px; }
+}
+@keyframes scrollPulse {
+  0%,100% { opacity:.4; transform:scaleY(.8); }
+  50% { opacity:1; transform:scaleY(1); }
+}
+
+.reveal {
+  opacity:0; transform:translateY(28px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.reveal.in { opacity:1; transform:translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:960px) {
+  .about-grid    { grid-template-columns:1fr; gap:40px; }
+  .why-grid      { grid-template-columns:1fr 1fr; }
+  .gov-grid      { grid-template-columns:1fr 1fr; }
+  .maturity-steps { grid-template-columns:1fr 1fr; }
+  .deliverables-grid { grid-template-columns:1fr; }
+  .audience-grid { grid-template-columns:1fr 1fr; }
+  .roi-layout    { grid-template-columns:1fr; }
+  .books-row     { grid-template-columns:repeat(4,1fr); }
+}
+@media(max-width:600px) {
+  .why-grid      { grid-template-columns:1fr; }
+  .gov-grid      { grid-template-columns:1fr; }
+  .maturity-steps { grid-template-columns:1fr; }
+  .audience-grid { grid-template-columns:1fr; }
+  .books-row     { grid-template-columns:repeat(3,1fr); }
+  .hero-title    { letter-spacing:-2px; }
+  .stats-strip   { flex-wrap:wrap; }
+  .stat-block    { flex:0 0 50%; border-right:none; border-bottom:1px solid var(--border); }
+  .form-row      { grid-template-columns:1fr; }
+  nav .btn-ghost { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-rm-badge">RM</div>
+    <div class="nav-brand-text">
+      RiskMathics
+      <span>Financial Institute</span>
+    </div>
+  </div>
+  <div class="nav-actions">
+    <a href="#" class="btn-ghost" onclick="openModal('info')">Más información</a>
+    <a href="#" class="btn-cta-nav" onclick="openModal('inscribe')">Inscribirme</a>
+  </div>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-glow"></div>
+  <div class="hero-noise"></div>
+
+  <div class="hero-content">
+    <div class="hero-overline">
+      <div class="hero-overline-line"></div>
+      <span class="hero-overline-text">RiskMathics Financial Institute · Programa Ejecutivo 2026</span>
+      <div class="hero-overline-line"></div>
+    </div>
+
+    <h1 class="hero-title">
+      AI <span class="slash">//</span> OPERATING<br>SYSTEM BOOTCAMP
+    </h1>
+
+    <p class="hero-subtitle">
+      Redefining the Future of Companies,<br>BigCorps &amp; Global Financial Institutions
+    </p>
+
+    <div class="hero-cyan-line"></div>
+
+    <div class="hero-date-pill">
+      Abril 2026 &nbsp;·&nbsp; 20–24 Abril &nbsp;·&nbsp; 4:00–9:00 pm &nbsp;·&nbsp; Club de Industriales CDMX
+    </div>
+
+    <div class="hero-btns">
+      <a href="#" class="btn-hero-primary" onclick="openModal('inscribe')">Inscribirme Ahora</a>
+      <a href="#" class="btn-hero-ghost" onclick="openModal('info')">Solicitar Información</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span class="scroll-hint-text">Scroll</span>
+    <div class="scroll-hint-bar"></div>
+  </div>
+</section>
+
+<!-- ════ STATS STRIP ════ -->
+<div class="stats-strip">
+  <div class="stat-block">
+    <div class="stat-val">92<em>%</em></div>
+    <div class="stat-lbl">Fortune 500 con GenAI activo</div>
+    <div class="stat-src">AIPRM, 2025</div>
+  </div>
+  <div class="stat-block">
+    <div class="stat-val">80<em>%</em></div>
+    <div class="stat-lbl">de esos proyectos fracasan</div>
+    <div class="stat-src">RAND Corp., 2024</div>
+  </div>
+  <div class="stat-block">
+    <div class="stat-val"><em>€</em>35<em>M</em></div>
+    <div class="stat-lbl">multa máxima EU AI Act</div>
+    <div class="stat-src">Regulation EU 2024/1689</div>
+  </div>
+  <div class="stat-block">
+    <div class="stat-val">87<em>%</em></div>
+    <div class="stat-lbl">C-Suite sin capacitación formal en IA</div>
+    <div class="stat-src">Est. RiskMathics 2026</div>
+  </div>
+  <div class="stat-block">
+    <div class="stat-val">20<em>h</em></div>
+    <div class="stat-lbl">intensivas · sistema operativo rediseñado</div>
+    <div class="stat-src">Programa ejecutivo presencial</div>
+  </div>
+</div>
+
+<!-- ════ ABSTRACT ════ -->
+<section class="section">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="eyebrow">
+          <div class="eyebrow-line"></div>
+          <span class="eyebrow-text">The Corporate Sixth Sense</span>
+        </div>
+        <h2 class="sec-title">La mayor ruptura<br>en arquitectura de<br><em>poder operativo</em></h2>
+
+        <p class="sec-body">La inteligencia artificial generativa no es una herramienta nueva que se añade al escritorio. Es una capa cognitiva que redefine quién decide, cómo se decide y qué evidencia respalda cada decisión dentro de una organización.</p>
+
+        <p class="sec-body">El resultado es previsible y devastador. Empresas con presupuestos de IA, pilotos activos, presentaciones al board —pero organizacionalmente muertas: sin trazabilidad, sin auditabilidad, sin control de cambios, sin capacidad de defender ante reguladores lo que sus propios sistemas producen.</p>
+
+        <div class="pull-quote">
+          <div class="pull-quote-text">"Las principales escuelas de negocio enseñan <em>sobre</em> IA. RiskMathics enseña a gobernar máquinas que piensan. La diferencia es la diferencia entre teoría y arquitectura institucional."</div>
+          <div class="pull-quote-attr">— Alejandro Reynoso, Ph.D. · Arquitecto del framework AI // OS</div>
+        </div>
+
+        <p class="sec-body">En 20 horas intensivas, AI // OPERATING SYSTEM BOOTCAMP transforma ejecutivos que reaccionan ante la IA en líderes que la dirigen, la contienen y la escalan bajo reglas de juego explícitas. No salen con un certificado. Salen con un sistema operativo rediseñado.</p>
+      </div>
+
+      <div class="reveal">
+        <div class="stat-grid-2x3">
+          <div class="mini-stat">
+            <div class="mini-stat-val">$6.08<small>M</small></div>
+            <div class="mini-stat-desc">Costo promedio breach financiero</div>
+            <div class="mini-stat-src">IBM/Ponemon 2024</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-val">42<small>%</small></div>
+            <div class="mini-stat-desc">Empresas que abandonaron iniciativas IA en 2025</div>
+            <div class="mini-stat-src">S&P Global MI</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-val">28<small>%</small></div>
+            <div class="mini-stat-desc">CEOs con oversight directo de gobernanza IA</div>
+            <div class="mini-stat-src">McKinsey 2025</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-val">8<small>%</small></div>
+            <div class="mini-stat-desc">Inst. financieras MX con gobernanza formal IA</div>
+            <div class="mini-stat-src">Est. RiskMathics</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-val">18<small>m</small></div>
+            <div class="mini-stat-desc">Ventana competitiva perdida irrecuperable</div>
+            <div class="mini-stat-src">Análisis sectorial</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-val">800<small>:1</small></div>
+            <div class="mini-stat-desc">ROI por incidente prevenido vs. inversión en Bootcamp</div>
+            <div class="mini-stat-src">Cálculo propietario RM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FACULTY ════ -->
+<section class="section faculty-section">
+  <div class="section-inner">
+    <div class="eyebrow reveal">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Faculty</span>
+    </div>
+    <h2 class="sec-title reveal">El practitioner que construyó los<br>sistemas que hoy mueven<br><em>cientos de miles de millones</em></h2>
+
+    <div class="faculty-layout" style="margin-top:56px;">
+      <!-- Bio content -->
+      <div class="faculty-bio-wrap reveal">
+
+        <!-- Name header replacing portrait -->
+        <div class="faculty-header-block">
+          <div class="faculty-header-name">Alejandro Reynoso<span class="faculty-header-phd">, Ph.D.</span></div>
+          <div class="faculty-header-cred">External Lecturer, Cambridge Judge Business School &nbsp;·&nbsp; Ph.D. in Economics, MIT</div>
+          <div class="faculty-header-tags">
+            <span class="ftag">Cambridge Judge BS</span>
+            <span class="ftag">Ph.D. MIT</span>
+            <span class="ftag">Fundador CONSAR</span>
+            <span class="ftag">Ex-Banxico</span>
+            <span class="ftag">iShares / BlackRock</span>
+            <span class="ftag">Evercore Partners</span>
+          </div>
+        </div>
+
+        <div class="bio-intro">
+          "Su trayectoria representa una combinación excepcional y poco frecuente: la capacidad de operar simultáneamente en el mundo regulatorio, el mundo institucional y el mundo académico con el mismo nivel de rigor y profundidad."
+        </div>
+
+        <p class="bio-para">Economista y practitioner de finanzas cuantitativas con más de dos décadas de posiciones de liderazgo senior que abarcan desde la formulación de política pública financiera hasta la gestión global de activos y la arquitectura de mercados de capitales.</p>
+
+        <p class="bio-para">Su foco actual es en métodos de IA y quantum-inspired para construcción de portafolios, geometría de mercados y arquitecturas de razonamiento con grado de gobernanza para inversionistas institucionales, fondos de pensiones y reguladores. Es autor del framework propietario <strong style="color:var(--cyan)">AI // Operating System</strong> que constituye la columna vertebral intelectual de este programa.</p>
+
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-bar"></div>
+            <div>
+              <div class="tl-org">Head y Fundador · CONSAR</div>
+              <div class="tl-role">Diseñó e implementó el marco regulatorio completo del sistema de pensiones individual de México —una de las reformas financieras más significativas del país— que hoy administra activos por más de USD $300 mil millones.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-bar"></div>
+            <div>
+              <div class="tl-org">Head of Economic Research · Banco de México</div>
+              <div class="tl-role">Dirigió la investigación de política monetaria, dinámica inflacionaria y flujos de capital en el banco central de la 15ª economía mundial.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-bar"></div>
+            <div>
+              <div class="tl-org">Senior Managing Director · Bolsa Mexicana de Valores</div>
+              <div class="tl-role">Lideró la salida a bolsa de la BMV —la primera en la historia de una bolsa de valores latinoamericana— y la modernización integral de sus operaciones. Equity Deal of the Year 2008.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-bar"></div>
+            <div>
+              <div class="tl-org">MD &amp; CIO América Latina · iShares (Barclays / BlackRock)</div>
+              <div class="tl-role">Responsable de la estrategia de inversión ETF y gestión de riesgo para toda la región latinoamericana en lo que hoy es BlackRock, el gestor de activos más grande del mundo.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-bar"></div>
+            <div>
+              <div class="tl-org">Senior MD · Evercore Partners · Fundador FIBRA HD</div>
+              <div class="tl-role">Co-creó la industria de REITs mexicanos (FIBRAs) y ejecutó la primera toma hostil exitosa en la historia de la Bolsa Mexicana de Valores. Top 5 Equity Deals 2011 por el primer REIT de América Latina.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-bar"></div>
+            <div>
+              <div class="tl-org">External Lecturer · Cambridge Judge Business School</div>
+              <div class="tl-role">Enseña módulos MBA/MFin sobre IA en finanzas, razonamiento estructural y métodos cuantitativos en una de las 5 mejores escuelas de negocio del mundo.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-bar"></div>
+            <div>
+              <div class="tl-org">Investigación y Sistemas</div>
+              <div class="tl-role">Autor de Structural Reasoning for Finance, Quantum-Inspired Algorithms in Quantitative Finance y Emergence of Intelligence. Más de 75 papers sobre IA, finanzas quantum-inspired y geometría de mercados. Diseñador de AFP-V5 Reasoning Model, Engineering the McKinsey Agent y Committee-Adaptive Trader (CAT).</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="awards-strip">
+          <span class="award-chip">Premio Banamex Investigación Económica 1990</span>
+          <span class="award-chip">Premio Banamex Investigación Económica 2005</span>
+          <span class="award-chip">Equity Deal of the Year · BMV IPO 2008</span>
+          <span class="award-chip">Top 5 Equity Deals · Primer REIT LATAM 2011</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ WHY 5 DAYS ════ -->
+<section class="section why-bg">
+  <div class="section-inner">
+    <div class="eyebrow reveal">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">¿Por qué 5 días?</span>
+    </div>
+    <h2 class="sec-title reveal">Este programa no forma<br>operadores. Forma <em>gobernantes</em>.</h2>
+    <p class="sec-body reveal" style="max-width:620px;">Para un CEO, CFO u otro miembro del primer o segundo nivel organizacional, cinco días representan un costo de oportunidad real. Por ello, este programa no se plantea como capacitación técnica, sino como formación estratégica de alto impacto.</p>
+
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <div class="why-num">01</div>
+        <div class="why-title">Exigir correctamente a equipos técnicos</div>
+        <div class="why-desc">Desarrolla el lenguaje y criterios para interrogar propuestas, evaluar vendors y distinguir governance real de teatro corporativo.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">02</div>
+        <div class="why-title">Definir reglas antes de implementar</div>
+        <div class="why-desc">Diseña políticas, controles y arquitecturas de decisión que soporten auditoría regulatoria, comité ejecutivo y consejo de administración.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">03</div>
+        <div class="why-title">Entender los límites reales de la tecnología</div>
+        <div class="why-desc">Distingue fluidez de veracidad, confianza aparente de exactitud verificada. Los LLMs producen respuestas plausibles que pueden ser falsas.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">04</div>
+        <div class="why-title">Reducir riesgo operativo y regulatorio</div>
+        <div class="why-desc">Construye estructuras defendibles ante el EU AI Act, la CNBV y cualquier regulador que exija trazabilidad y control de cambios documentado.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">05</div>
+        <div class="why-title">Establecer responsabilidad con evidencia</div>
+        <div class="why-desc">Humans in the Loop como arquitectura operativa, no buena intención. Cada decisión relevante debe tener un responsable identificable y defendible.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-num">06</div>
+        <div class="why-title">Salir con artefactos listos para ejecutar</div>
+        <div class="why-desc">Stage gates, stop rules, blueprints de flujos y un roadmap de 90 días que conecta aprendizaje con implementación responsable desde el día siguiente.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ GOVERNANCE ════ -->
+<section class="section">
+  <div class="section-inner">
+    <div class="eyebrow reveal">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Eje central del programa</span>
+    </div>
+    <h2 class="sec-title reveal">5 Principios No Negociables<br>de <em>Gobernanza</em></h2>
+    <p class="sec-body reveal" style="max-width:580px;">Sin gobernanza, la IA introduce velocidad sin control, fluidez sin veracidad y autonomía sin responsabilidad. Todo proceso empresarial que incorpore modelos generativos debe cumplir estos cinco principios.</p>
+
+    <div class="gov-grid reveal">
+      <div class="gov-card">
+        <span class="gov-icon">👁</span>
+        <div class="gov-num">01</div>
+        <div class="gov-title">Transparencia</div>
+        <div class="gov-desc">Todo output debe declarar su alcance, limitaciones y supuestos. La transparencia impide que la fluidez del lenguaje se interprete como verdad verificada.</div>
+      </div>
+      <div class="gov-card">
+        <span class="gov-icon">🔗</span>
+        <div class="gov-num">02</div>
+        <div class="gov-title">Trazabilidad</div>
+        <div class="gov-desc">Cada decisión debe poder reconstruirse. Se conserva el vínculo entre inputs, transformaciones y outputs para revisión, corrección y defensa ante terceros.</div>
+      </div>
+      <div class="gov-card">
+        <span class="gov-icon">🔍</span>
+        <div class="gov-num">03</div>
+        <div class="gov-title">Auditabilidad</div>
+        <div class="gov-desc">Todo proceso debe dejar evidencia suficiente para revisión independiente: registros, versiones, aprobaciones, supuestos y verificaciones.</div>
+      </div>
+      <div class="gov-card">
+        <span class="gov-icon">🔒</span>
+        <div class="gov-num">04</div>
+        <div class="gov-title">Confidencialidad</div>
+        <div class="gov-desc">La información se clasifica y minimiza. Solo se utiliza lo estrictamente necesario, con controles de acceso y reglas de escalamiento explícitas.</div>
+      </div>
+      <div class="gov-card">
+        <span class="gov-icon">🤝</span>
+        <div class="gov-num">05</div>
+        <div class="gov-title">Control Humano</div>
+        <div class="gov-desc">El juicio final permanece siempre en manos humanas. La IA asiste, estructura o propone, pero nunca sustituye la responsabilidad ejecutiva.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ 5 DAYS ════ -->
+<section class="section" style="background:var(--navy-mid); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="section-inner">
+    <div class="eyebrow reveal">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Desarrollo del Programa Intensivo</span>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; margin-bottom:48px;">
+      <div class="reveal">
+        <h2 class="sec-title">5 Días.<br><em>Diagonal</em><br>de madurez.</h2>
+        <p class="sec-body">Cada jornada combina construcción conceptual, análisis de riesgo, diseño de controles y producción de artefactos reutilizables. La progresión sigue una diagonal deliberada a través del modelo de madurez de 5 niveles × 5 dominios.</p>
+      </div>
+      <div class="reveal" style="display:flex; flex-direction:column; gap:12px; justify-content:center;">
+        <div style="font-family:'Poppins',sans-serif; font-size:9px; font-weight:700; color:var(--cyan); letter-spacing:3px; text-transform:uppercase; margin-bottom:4px;">Cada día produce artefactos</div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <span class="chip">Plantillas de transparencia</span>
+          <span class="chip">Stage gates</span>
+          <span class="chip">Stop rules</span>
+          <span class="chip">Blueprints de flujos</span>
+          <span class="chip">Operating model H-IA-HC</span>
+          <span class="chip">Roadmap 90 días</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="days-wrap">
+      <!-- Day 1 -->
+      <div class="day-row">
+        <div class="day-num-col">
+          <div class="day-num">1</div>
+          <div class="day-word">Día</div>
+        </div>
+        <div class="day-body-col">
+          <div class="day-topic-row">
+            <div class="day-topic-name">Fundamentos y Traducción a Gobernanza</div>
+            <span class="day-domain">Marco Conceptual</span>
+          </div>
+          <div class="day-desc">Construye el lenguaje común para gobernar IA sin necesidad de ser científico de datos. Explica el comportamiento real de los modelos generativos, por qué fluidez no es veracidad, y cómo traducir esa comprensión en riesgos, controles y decisiones organizacionales. Se evita deliberadamente la aproximación matemática.</div>
+          <div class="day-chips">
+            <span class="chip">ML vs. Generative AI</span>
+            <span class="chip">Por qué existe error y falla la generalización</span>
+            <span class="chip">Transformadores: embeddings, contexto, atención</span>
+            <span class="chip">Modelos de razonamiento: promesas y riesgos</span>
+            <span class="chip">Matriz riesgo × tipo de tarea</span>
+            <span class="chip">Criterios ejecutivos para evaluar iniciativas</span>
+          </div>
+          <div class="day-artefacts-bar">
+            <span class="artefacts-label">Artefactos</span>
+            <span class="artefact-chip">Plantilla Transparencia Base</span>
+            <span class="artefact-chip">Matriz Riesgo × Tarea</span>
+            <span class="artefact-chip">Criterios Evaluación Vendors</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day 2 -->
+      <div class="day-row">
+        <div class="day-num-col">
+          <div class="day-num">2</div>
+          <div class="day-word">Día</div>
+        </div>
+        <div class="day-body-col">
+          <div class="day-topic-row">
+            <div class="day-topic-name">De la Asistencia al Workflow</div>
+            <span class="day-domain">Legal · Contabilidad · Consultoría</span>
+          </div>
+          <div class="day-desc">Escala de uso puntual a flujos estructurados y observa cómo el riesgo se transforma. Tres bloques: (1) Nivel 1/Legal — gobernanza de confidencialidad; (2) Nivel 2/Auditoría — trazabilidad de evidencia; (3) Nivel 3/Consultoría — stage gates y stop rules en flujos agénticos multietapa.</div>
+          <div class="day-chips">
+            <span class="chip">Nivel 1 Chatbots · Dominio Legal</span>
+            <span class="chip">Clasificación de sensibilidad y minimización</span>
+            <span class="chip">Nivel 2 Analyzers · Contabilidad / Auditoría</span>
+            <span class="chip">Reglas de rechazo por certeza injustificada</span>
+            <span class="chip">Nivel 3 Agents · Consultoría multietapa</span>
+            <span class="chip">Error escalado en flujos multietapa</span>
+          </div>
+          <div class="day-artefacts-bar">
+            <span class="artefacts-label">Artefactos</span>
+            <span class="artefact-chip">Checklist Confidencialidad</span>
+            <span class="artefact-chip">Stop Rules por Dominio</span>
+            <span class="artefact-chip">Blueprint Flujo Consultora</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day 3 -->
+      <div class="day-row">
+        <div class="day-num-col">
+          <div class="day-num">3</div>
+          <div class="day-word">Día</div>
+        </div>
+        <div class="day-body-col">
+          <div class="day-topic-row">
+            <div class="day-topic-name">Innovación Gobernada y Organización</div>
+            <span class="day-domain">Asesoría Financiera · Investment Banking</span>
+          </div>
+          <div class="day-desc">Tránsito de exploración de alternativas a integración institucional. La innovación solo es útil si está gobernada. Nivel 4 en asesoría financiera (lenguaje condicionado, separación exploración–acción) + Nivel 5 en banca de inversión (operating model completo, control documental, comités y auditoría continua).</div>
+          <div class="day-chips">
+            <span class="chip">Nivel 4 Innovators · Asesoría Financiera</span>
+            <span class="chip">Lenguaje condicionado · separar exploración de acción</span>
+            <span class="chip">Nivel 5 Organization · Investment Banking</span>
+            <span class="chip">Roles, ownership, control documental y comités</span>
+            <span class="chip">Operating model H-IA-hardcoded</span>
+            <span class="chip">Change control, versionamiento y rollback</span>
+          </div>
+          <div class="day-artefacts-bar">
+            <span class="artefacts-label">Artefactos</span>
+            <span class="artefact-chip">Blueprint Operating Model</span>
+            <span class="artefact-chip">Esquema de Ownership</span>
+            <span class="artefact-chip">Framework Change Control</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day 4 -->
+      <div class="day-row">
+        <div class="day-num-col">
+          <div class="day-num">4</div>
+          <div class="day-word">Día</div>
+        </div>
+        <div class="day-body-col">
+          <div class="day-topic-row">
+            <div class="day-topic-name">Customización mediante RAG y Agentes de Investigación</div>
+            <span class="day-domain">RAG · Multi-Agent Systems</span>
+          </div>
+          <div class="day-desc">La personalización es donde muchas implementaciones fallan. Conectar IA a información propia puede destruir gobernanza si no se diseña con controles. Retrieval-Augmented Generation (RAG): corpus permitido, control de acceso, versionamiento de fuentes, trazabilidad documental. Agentes de investigación con human verification obligatoria.</div>
+          <div class="day-chips">
+            <span class="chip">RAG: definición de corpus permitido</span>
+            <span class="chip">Control de acceso y versionamiento de fuentes</span>
+            <span class="chip">Trazabilidad documental como requisito</span>
+            <span class="chip">Políticas de inclusión / exclusión</span>
+            <span class="chip">Agentes: búsqueda, contraste, síntesis</span>
+            <span class="chip">El agente organiza; el humano cierra</span>
+          </div>
+          <div class="day-artefacts-bar">
+            <span class="artefacts-label">Artefactos</span>
+            <span class="artefact-chip">Política de Corpus RAG</span>
+            <span class="artefact-chip">Blueprint Agente Investigación</span>
+            <span class="artefact-chip">Criterios de Aceptación por Nivel</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day 5 -->
+      <div class="day-row">
+        <div class="day-num-col">
+          <div class="day-num">5</div>
+          <div class="day-word">Día</div>
+        </div>
+        <div class="day-body-col">
+          <div class="day-topic-row">
+            <div class="day-topic-name">Fine-Tuning y Gobierno del Entrenamiento</div>
+            <span class="day-domain">Fine-Tuning · Roadmap 90 Días</span>
+          </div>
+          <div class="day-desc">Criterio ejecutivo para decidir cuándo entrenar modelos y cuándo no. RAG, plantillas gobernadas y procesos bien diseñados capturan la mayor parte del valor con menor riesgo que el fine-tuning. Gobernanza de datos: permisos, privacidad, calidad, sesgo, versionamiento. Cierre: roadmap realista de 90 días.</div>
+          <div class="day-chips">
+            <span class="chip">Fine-tuning vs. RAG: cuándo usar cada uno</span>
+            <span class="chip">Dataset como activo gobernado</span>
+            <span class="chip">Gobernanza de datos: permisos, sesgo, calidad</span>
+            <span class="chip">Fine-tuning de razonamiento y GRPO</span>
+            <span class="chip">Deriva, mantenimiento y control de cambios</span>
+            <span class="chip">Roadmap 90 días: pilotos → escalar → institucionalizar</span>
+          </div>
+          <div class="day-artefacts-bar">
+            <span class="artefacts-label">Artefactos</span>
+            <span class="artefact-chip">Roadmap 90 Días</span>
+            <span class="artefact-chip">Framework Pilotos Gobernados</span>
+            <span class="artefact-chip">Mapa de Madurez Organizacional</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ MATURITY ════ -->
+<section class="section maturity-bg">
+  <div class="section-inner">
+    <div class="eyebrow reveal">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Modelo de Madurez Propietario RiskMathics</span>
+    </div>
+    <h2 class="sec-title reveal">5 Niveles de Integración de <em>IA</em></h2>
+    <p class="sec-body reveal" style="max-width:600px;">La IA no se "implementa" de una sola vez. Se integra gradualmente al sistema operativo empresarial conforme aumenta su grado de autonomía y su impacto sobre los procesos críticos de la organización.</p>
+
+    <div class="maturity-steps reveal">
+      <div class="mat-card">
+        <div class="mat-bar" style="width:20%"></div>
+        <div class="mat-level">Nivel 1</div>
+        <div class="mat-name">Chatbots</div>
+        <div class="mat-desc">Apoyo puntual para redacción, estructuración o aclaración. Valor inmediato, riesgo de uso informal con datos sensibles.</div>
+        <div class="mat-risk-label">Riesgo Principal</div>
+        <div class="mat-risk-desc">Confusión entre fluidez y exactitud. Información sensible sin control.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-bar" style="width:40%"></div>
+        <div class="mat-level">Nivel 2</div>
+        <div class="mat-name">Analyzers</div>
+        <div class="mat-desc">IA organiza análisis, identifica supuestos, compara alternativas y construye argumentos estructurados.</div>
+        <div class="mat-risk-label">Riesgo Principal</div>
+        <div class="mat-risk-desc">Falsa certeza: razonamientos coherentes sobre supuestos implícitos no verificados.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-bar" style="width:60%"></div>
+        <div class="mat-level">Nivel 3</div>
+        <div class="mat-name">Agents</div>
+        <div class="mat-desc">IA opera flujos multietapa: intake, análisis, investigación, síntesis y redacción encadenados.</div>
+        <div class="mat-risk-label">Riesgo Principal</div>
+        <div class="mat-risk-desc">Error sistémico: un supuesto temprano se propaga consistentemente a lo largo de todo el flujo.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-bar" style="width:80%"></div>
+        <div class="mat-level">Nivel 4</div>
+        <div class="mat-name">Innovators</div>
+        <div class="mat-desc">IA explora escenarios, rediseña procesos y evalúa alternativas estratégicas con alta autonomía.</div>
+        <div class="mat-risk-label">Riesgo Principal</div>
+        <div class="mat-risk-desc">Exploración interpretada como recomendación. Innovación sin control de cambio formal.</div>
+      </div>
+      <div class="mat-card" style="border-bottom:3px solid var(--cyan);">
+        <div class="mat-bar" style="width:100%"></div>
+        <div class="mat-level">Nivel 5</div>
+        <div class="mat-name">Organization</div>
+        <div class="mat-desc">IA integrada al sistema operativo completo: roles, métricas, auditoría continua y control de cambios.</div>
+        <div class="mat-risk-label">Riesgo Principal</div>
+        <div class="mat-risk-desc">Riesgo estructural permanente. Requiere ownership institucional, versionamiento y revisión independiente.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ DELIVERABLES ════ -->
+<section class="section">
+  <div class="section-inner">
+    <div class="eyebrow reveal">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Lo que te llevas</span>
+    </div>
+    <h2 class="sec-title reveal">Entregables <em>Estratégicos</em></h2>
+    <p class="sec-body reveal" style="max-width:580px;">Al finalizar el programa no sales con un certificado. Sales con un sistema operativo rediseñado y un conjunto completo de artefactos listos para activar implementación responsable en tu organización.</p>
+
+    <div class="deliverables-grid reveal">
+      <div class="del-group">
+        <div class="del-group-title">Diagnóstico</div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Mapa de madurez organizacional en los 5 niveles del framework propietario RiskMathics</div></div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Clasificación de procesos críticos por nivel permitido de IA y autonomía aceptable</div></div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Assessment de gaps de gobernanza frente a EU AI Act y estándares regulatorios aplicables</div></div>
+      </div>
+      <div class="del-group">
+        <div class="del-group-title">Arquitectura</div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Operating model humano–IA–hardcoded para los procesos críticos de la organización</div></div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Blueprints de flujos gobernados con puntos de control formales (stage gates)</div></div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Stop rules que suspenden automáticamente flujos ante condiciones no permitidas</div></div>
+      </div>
+      <div class="del-group">
+        <div class="del-group-title">Políticas</div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Plantillas de transparencia reutilizables: hechos, supuestos, preguntas abiertas, verificación</div></div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Checklists de confidencialidad y minimización de datos para cada dominio profesional</div></div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Criterios de aceptación de outputs por nivel de autonomía y criticidad del proceso</div></div>
+      </div>
+      <div class="del-group">
+        <div class="del-group-title">Implementación</div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Roadmap de 90 días priorizado con criterios de escalamiento e institucionalización</div></div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Criterios técnicos para evaluar propuestas de vendors y consultoras con fundamento</div></div>
+        <div class="del-item"><div class="del-check"></div><div class="del-text">Framework de pilotos gobernados con métricas de seguimiento y mecanismos de rollback</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ AUDIENCE ════ -->
+<section class="section" style="background:var(--navy-panel); border-top:1px solid var(--border);">
+  <div class="section-inner">
+    <div class="eyebrow reveal">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">¿Para quién?</span>
+    </div>
+    <h2 class="sec-title reveal">Audiencia <em>Objetivo</em></h2>
+
+    <div class="audience-grid reveal">
+      <div class="aud-card"><div class="aud-bar"></div><div class="aud-role">CEOs, COOs y Directores Generales</div><div class="aud-sub">Responsables últimos del sistema operativo empresarial</div></div>
+      <div class="aud-card"><div class="aud-bar"></div><div class="aud-role">CFOs y Directores de Finanzas</div><div class="aud-sub">Guardianes de riesgo financiero y compliance regulatorio</div></div>
+      <div class="aud-card"><div class="aud-bar"></div><div class="aud-role">CIOs, CTOs y Chief Data Officers</div><div class="aud-sub">Arquitectos de la infraestructura que habilita o restringe la IA</div></div>
+      <div class="aud-card"><div class="aud-bar"></div><div class="aud-role">Chief Risk Officers (CRO)</div><div class="aud-sub">Responsables de marcos de riesgo que deben integrar IA</div></div>
+      <div class="aud-card"><div class="aud-bar"></div><div class="aud-role">General Counsel y Directores Jurídicos</div><div class="aud-sub">Responsables de compliance, reputación y defensa institucional</div></div>
+      <div class="aud-card"><div class="aud-bar"></div><div class="aud-role">Heads de Compliance</div><div class="aud-sub">Guardianes de adherencia regulatoria en entorno de rápida evolución</div></div>
+      <div class="aud-card"><div class="aud-bar"></div><div class="aud-role">Managing Directors · Banca de Inversión</div><div class="aud-sub">Líderes de procesos de alto impacto financiero e institucional</div></div>
+      <div class="aud-card"><div class="aud-bar"></div><div class="aud-role">Directores de Auditoría Interna</div><div class="aud-sub">Responsables de marcos de revisión independiente con IA</div></div>
+      <div class="aud-card"><div class="aud-bar"></div><div class="aud-role">Miembros de Consejos de Administración</div><div class="aud-sub">Supervisores de riesgo estratégico y gobernanza corporativa</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ COMPARISON ════ -->
+<section class="section comparison-bg">
+  <div class="section-inner">
+    <div class="eyebrow reveal">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Benchmarking Global</span>
+    </div>
+    <h2 class="sec-title reveal">Este programa <em>vs.</em> el mundo</h2>
+    <p class="sec-body reveal" style="max-width:600px;">El mercado de educación ejecutiva en IA está dominado por programas que priorizan alfabetización digital teórica o innovación abstracta. Los datos provienen de los sitios públicos de cada institución.</p>
+
+    <div style="overflow-x:auto;">
+      <table class="cmp-table reveal">
+        <thead>
+          <tr>
+            <th>Institución</th>
+            <th>Programa</th>
+            <th>Duración</th>
+            <th>Enfoque</th>
+            <th>Diferenciador</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>MIT Sloan</td><td>AI: Implications for Business Strategy</td><td>6 sem online</td><td>Estrategia</td><td>Estrategia corporativa. Sin artefactos de gobernanza ejecutables.</td></tr>
+          <tr><td>Stanford GSB</td><td>AI-Powered Organization</td><td>1 sem presencial</td><td>Innovación</td><td>Formato breve. Enfoque en innovación, no en compliance ni trazabilidad.</td></tr>
+          <tr><td>Harvard HBS</td><td>Competing in the Age of AI</td><td>4 días</td><td>AI-first models</td><td>Metodología caso. Conceptual, sin frameworks ejecutables ni roadmap.</td></tr>
+          <tr><td>INSEAD</td><td>AI for Business</td><td>5 días</td><td>Transformación</td><td>Transformación digital general. Mono-dominio. Sin gobernanza sectorial.</td></tr>
+          <tr><td>Oxford Saïd</td><td>AI Strategy &amp; Leadership</td><td>5 días</td><td>Ética AI</td><td>Perspectiva regulatoria europea. Énfasis ético-filosófico. Sin instrumentación.</td></tr>
+          <tr><td>Wharton</td><td>AI in Marketing</td><td>8 sem híbrido</td><td>Analytics</td><td>Especializado en analytics de marketing. No aborda gobernanza transversal.</td></tr>
+          <tr>
+            <td>RiskMathics <span class="star-badge">★</span></td>
+            <td><strong>AI // Operating System Bootcamp</strong></td>
+            <td><strong>5 días · 20h presenciales</strong></td>
+            <td><strong>Gobernanza + Artefactos</strong></td>
+            <td><strong>7 libros originales, 5 dominios, roadmap 90 días, artefactos ejecutables, faculty Cambridge/MIT con trayectoria institucional única en México.</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════ LIBRARY ════ -->
+<section class="section library-bg">
+  <div class="section-inner">
+    <div class="eyebrow reveal">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Biblioteca Académica Exclusiva</span>
+    </div>
+    <h2 class="sec-title reveal">7 Libros Originales<br>desarrollados para <em>este programa</em></h2>
+    <p class="sec-body reveal" style="max-width:620px;">No son compilaciones. Son textos diseñados para acompañar la progresión conceptual, operativa y de gobernanza del programa. Cada capítulo incluye notebooks en Google Colab para transferencia inmediata hacia equipos técnicos.</p>
+
+    <div class="books-row reveal">
+      <div class="book-tile"><div class="book-cover"><div class="book-icon">🤖</div><div class="book-title">AI Fundamentals</div></div><div class="book-num">Libro 01</div></div>
+      <div class="book-tile"><div class="book-cover"><div class="book-icon">⚖️</div><div class="book-title">Legal Domain</div></div><div class="book-num">Libro 02</div></div>
+      <div class="book-tile"><div class="book-cover"><div class="book-icon">📊</div><div class="book-title">Accounting &amp; Audit</div></div><div class="book-num">Libro 03</div></div>
+      <div class="book-tile"><div class="book-cover"><div class="book-icon">🧭</div><div class="book-title">Consulting</div></div><div class="book-num">Libro 04</div></div>
+      <div class="book-tile"><div class="book-cover"><div class="book-icon">📈</div><div class="book-title">Finance Advisory</div></div><div class="book-num">Libro 05</div></div>
+      <div class="book-tile"><div class="book-cover"><div class="book-icon">🏛️</div><div class="book-title">Investment Banking</div></div><div class="book-num">Libro 06</div></div>
+      <div class="book-tile"><div class="book-cover"><div class="book-icon">⚙️</div><div class="book-title">Fine-Tuning</div></div><div class="book-num">Libro 07</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ ROI ════ -->
+<section class="section" style="background:var(--navy-mid); border-top:1px solid var(--border);">
+  <div class="section-inner">
+    <div class="roi-layout">
+      <div class="reveal">
+        <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">El costo de no gobernar</span></div>
+        <h2 class="roi-title">El riesgo de<br>no actuar es<br><em>catastrófico</em></h2>
+        <p class="roi-para">El EU AI Act (Art. 99) impone multas de hasta €35M o el 7% del ingreso global anual. El costo promedio de un breach financiero es USD $6.08M — 22% superior al promedio global. La ventana competitiva perdida frente a organizaciones que sí gobiernan su IA se estima en 18–24 meses irrecuperables.</p>
+        <p class="roi-para">Frente a una exposición de decenas de millones por incidente, la inversión en el Bootcamp genera un ROI superior a 800:1 por incidente prevenido.</p>
+      </div>
+      <div class="roi-rows reveal">
+        <div class="roi-r"><span class="roi-lbl">Remediación regulatoria</span><span class="roi-val">$15M</span></div>
+        <div class="roi-r"><span class="roi-lbl">Multas CNBV / regulador</span><span class="roi-val">$8M</span></div>
+        <div class="roi-r"><span class="roi-lbl">Litigio y defensa legal</span><span class="roi-val">$12M</span></div>
+        <div class="roi-r"><span class="roi-lbl">Pérdida de clientes e ingresos</span><span class="roi-val">$20M</span></div>
+        <div class="roi-r"><span class="roi-lbl">Daño reputacional y costo de oportunidad</span><span class="roi-val">$15M</span></div>
+        <div class="roi-r"><span class="roi-lbl" style="font-weight:700; font-size:11px; letter-spacing:1px;">EXPOSICIÓN TOTAL ESTIMADA</span><span class="roi-val">$70M+</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FINAL CTA ════ -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-eyebrow">Cupo Limitado · Abril 2026 · Club de Industriales, Polanco CDMX</div>
+    <h2 class="cta-title">La inteligencia artificial<br>amplifica tu responsabilidad.</h2>
+    <p class="cta-sub">En 20 horas intensivas, transforma la manera en que lideras, decides y proteges tu organización en la era de la IA generativa.</p>
+    <div class="cta-pill">
+      20 al 24 de Abril, 2026 &nbsp;·&nbsp; 4:00 – 9:00 pm &nbsp;·&nbsp; Presencial
+    </div>
+    <div class="cta-btns">
+      <a href="#" class="btn-final-a" onclick="openModal('inscribe')">Inscribirme al Bootcamp</a>
+      <a href="#" class="btn-final-b" onclick="openModal('info')">Solicitar Información</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand-text">
+    RiskMathics Financial Institute
+    <small>Arquitectura Institucional para la Era de la IA</small>
+  </div>
+  <div class="footer-contact">
+    <a href="/cdn-cgi/l/email-protection#6c0914090f1918051a092c1e051f07010d1804050f1f420f0301"><span class="__cf_email__" data-cfemail="21445944425455485744615348524a4c4055494842520f424e4c">[email&#160;protected]</span></a><br>
+    +52 55 5536 5537 ext. 2208<br>
+    <a href="https://www.riskmathics.com">www.riskmathics.com</a>
+  </div>
+  <div class="footer-tagline">
+    Learn. Apply. Profit.<br>
+    Where Networks Become Net Worth.
+  </div>
+</footer>
+
+<!-- ════ MODAL INFO ════ -->
+<div class="modal-overlay" id="modal-info">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div class="modal-hd-title">Solicitar Información</div>
+      <div class="modal-hd-sub">AI // Operating System Bootcamp · Abril 2026</div>
+      <button class="modal-close" onclick="closeModal('info')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Nombre</label><input type="text" class="form-input" placeholder="Nombre completo"></div>
+        <div class="form-group"><label class="form-label">Apellido</label><input type="text" class="form-input" placeholder="Apellido"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Correo Institucional</label><input type="email" class="form-input" placeholder="nombre@empresa.com"></div>
+      <div class="form-group"><label class="form-label">Empresa / Institución</label><input type="text" class="form-input" placeholder="Nombre de tu organización"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Cargo</label><input type="text" class="form-input" placeholder="Tu posición"></div>
+        <div class="form-group"><label class="form-label">Teléfono</label><input type="tel" class="form-input" placeholder="+52 55 0000 0000"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿En qué podemos ayudarte?</label>
+        <select class="form-select">
+          <option value="">Selecciona una opción</option>
+          <option>Información general del programa</option>
+          <option>Propuesta inscripción corporativa (grupo)</option>
+          <option>Carta descriptiva para mi empresa</option>
+          <option>Hablar con un asesor</option>
+        </select>
+      </div>
+      <button class="form-submit" onclick="submitForm('info')">Solicitar Información</button>
+      <div class="form-fine">Un asesor de RiskMathics se pondrá en contacto en menos de 24 horas hábiles.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL INSCRIBIR ════ -->
+<div class="modal-overlay" id="modal-inscribe">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div class="modal-hd-title">Inscribirse al Bootcamp</div>
+      <div class="modal-hd-sub">AI // Operating System Bootcamp · 20–24 Abril 2026</div>
+      <button class="modal-close" onclick="closeModal('inscribe')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Nombre</label><input type="text" class="form-input" placeholder="Nombre completo"></div>
+        <div class="form-group"><label class="form-label">Apellido</label><input type="text" class="form-input" placeholder="Apellido"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Correo Institucional</label><input type="email" class="form-input" placeholder="nombre@empresa.com"></div>
+      <div class="form-group"><label class="form-label">Empresa / Institución</label><input type="text" class="form-input" placeholder="Nombre de tu organización"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Cargo</label><input type="text" class="form-input" placeholder="Tu posición actual"></div>
+        <div class="form-group"><label class="form-label">Teléfono</label><input type="tel" class="form-input" placeholder="+52 55 0000 0000"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Sector</label>
+          <select class="form-select">
+            <option value="">Selecciona</option>
+            <option>Banca Comercial</option>
+            <option>Casa de Bolsa / IB</option>
+            <option>AFORE / Asset Management</option>
+            <option>Aseguradora</option>
+            <option>SOFOM / SOFIPO</option>
+            <option>Corporativo / Industria</option>
+            <option>Consultoría / Big 4</option>
+            <option>Gobierno / Regulador</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">N.º Participantes</label>
+          <select class="form-select">
+            <option>1 participante</option>
+            <option>2–3 participantes</option>
+            <option>4–5 participantes</option>
+            <option>Más de 5 (corporativo)</option>
+          </select>
+        </div>
+      </div>
+      <button class="form-submit" onclick="submitForm('inscribe')">Completar Inscripción</button>
+      <div class="form-fine">Un asesor confirmará tu inscripción y enviará el proceso de pago en máximo 24 horas hábiles.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Modals ──
+function openModal(t){
+  document.getElementById('modal-'+t).classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeModal(t){
+  document.getElementById('modal-'+t).classList.remove('active');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.modal-overlay').forEach(function(o){
+  o.addEventListener('click',function(e){
+    if(e.target===this){
+      o.classList.remove('active');
+      document.body.style.overflow='';
+    }
+  });
+});
+function submitForm(t){
+  var btn=document.querySelector('#modal-'+t+' .form-submit');
+  btn.textContent='✓ Enviado — Te contactaremos pronto';
+  btn.style.background='#2a8a96';
+  btn.style.color='#fff';
+  setTimeout(function(){ closeModal(t); },2600);
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-overlay.active').forEach(function(m){
+      m.classList.remove('active');
+      document.body.style.overflow='';
+    });
+  }
+});
+
+// ── Reveal on scroll (bulletproof, no IntersectionObserver dependency) ──
+document.querySelectorAll('.day-row').forEach(function(r,i){
+  r.style.transitionDelay=(i*0.07)+'s';
+});
+
+function revealCheck(){
+  var wh = window.innerHeight;
+  document.querySelectorAll('.reveal, .day-row').forEach(function(el){
+    var top = el.getBoundingClientRect().top;
+    if(top < wh + 60){ el.classList.add('in'); }
+  });
+}
+
+// Fire on scroll
+window.addEventListener('scroll', revealCheck, {passive:true});
+
+// Fire immediately and at intervals to catch everything
+revealCheck();
+setTimeout(revealCheck, 150);
+setTimeout(revealCheck, 500);
+setTimeout(revealCheck, 1000);
+</script>
+</body>
+</html>
